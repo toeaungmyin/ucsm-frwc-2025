@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Voter {
+  id             String   @id @default(uuid())
+  serial         String   @unique
+  votes          Vote[]
+  createdAt      DateTime @default(now())
+}
+
+model Candidate {
+  id         Int      @id @default(autoincrement())
+  nomineeId  String
+  name       String
+  category   Category
+  image      String?
+  votes      Vote[]
+  createdAt  DateTime @default(now())
+}
+
+model Vote {
+  id          Int       @id @default(autoincrement())
+  voterId     String
+  candidateId Int
+  createdAt   DateTime  @default(now())
+
+  voter       Voter     @relation(fields: [voterId], references: [id])
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+
+  @@unique([voterId, candidateId]) // Ensures one vote per voter per candidate
+}
+
+enum Category {
+  KING
+  QUEEN
+  PRINCE
+  PRINCESS
+  BEST_SINGER
+  BEST_PERFORMANCE
+}
+
+model Setting {
+  id         Int      @id @default(autoincrement())
+  curr_index Int      @default(0)
+  vote_open  Boolean  @default(false)
+}
