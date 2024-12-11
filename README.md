@@ -1,66 +1,128 @@
-# UCSM FRWC 2025
+# UCSM Fresher Welcome Voting App
 
-Fresher welcome voting web-application for University of Computer Studies, Mandalay.
+## Overview
+The UCSM Fresher Welcome Voting App is a web application designed for the University of Computer Studies, Mandalay. It allows users to vote for their favorite candidates in various categories during the fresher welcome event.
+
+## Features
+- **Candidate Management**: Add, update, and delete candidates.
+- **Voter Management**: Generate and manage voters.
+- **Voting System**: Cast votes for candidates in different categories.
+- **PDF Export**: Export voter verification tickets with QR codes to PDF.
+- **Responsive Design**: Optimized for both desktop and mobile devices.
+
+## Project Structure
+```
+.env
+.eslintrc.json
+.gitignore
+.next/
+app/
+components/
+hooks/
+lib/
+prisma/
+public/
+```
+
+## Database
+The application uses PostgreSQL as the database, managed by Vercel Postgres. The Prisma ORM is used to interact with the database.
+
+### Schema
+```prisma
+model Voter {
+  id             String   @id @default(uuid())
+  serial         String   @unique
+  votes          Vote[]
+  createdAt      DateTime @default(now())
+}
+
+model Candidate {
+  id         Int      @id @default(autoincrement())
+  nomineeId  String
+  name       String
+  category   Category
+  image      String?
+  votes      Vote[]
+  createdAt  DateTime @default(now())
+}
+
+model Vote {
+  id          Int       @id @default(autoincrement())
+  voterId     String
+  candidateId Int
+  createdAt   DateTime  @default(now())
+
+  voter       Voter     @relation(fields: [voterId], references: [id])
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+
+  @@unique([voterId, candidateId])
+}
+
+enum Category {
+  KING
+  QUEEN
+  PRINCE
+  PRINCESS
+  BEST_SINGER
+  BEST_PERFORMANCE
+}
+
+model Setting {
+  id         Int      @id @default(autoincrement())
+  curr_index Int      @default(0)
+  vote_open  Boolean  @default(false)
+}
+```
+
+## Services
+
+### Vercel Hosting
+The application is hosted on Vercel, providing seamless deployment and scalability.
+
+### Vercel Postgres
+The PostgreSQL database is managed by Vercel Postgres, ensuring reliable and scalable database management.
+
+### Vercel Blob
+Vercel Blob is used for storing and managing images associated with candidates.
 
 ## Getting Started
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ### Prerequisites
-
-Make sure you have the following installed:
 - Node.js
-- npm, yarn, pnpm, or bun
+- PostgreSQL
 
 ### Installation
-
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/ucsm-frwc-2025.git
-    cd ucsm-frwc-2025
-    ```
-
+   ```sh
+   git clone https://github.com/toeaungmyin/ucsm-frwc-2025.git
+   ```
 2. Install dependencies:
-    ```bash
-    npm install
-    # or
-    yarn install
-    # or
-    pnpm install
-    # or
-    bun install
-    ```
+   ```sh
+   npm install
+   ```
+3. Set up environment variables in [`.env`](.env ) file:
+   ```env
+   DATABASE_URL=your_database_url
+   ```
 
-### Running the Development Server
+### Running the Application
+1. Run the development server:
+   ```sh
+   npm run dev
+   ```
+2. Open your browser and navigate to `http://localhost:3000`.
 
-Start the development server:
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Deployment
+1. Deploy the application to Vercel:
+   ```sh
+   vercel
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## License
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE ) file for details.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contact
+For any inquiries, please contact Toe Aung Myin at [toeaungmyin.official@gmail.com](mailto:toeaungmyin.official@gmail.com).
