@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Voter } from "@prisma/client";
 import PdfContainer from "./pdf-container";
 import generatePDF, { Margin, Options, Resolution } from "react-to-pdf";
@@ -18,7 +18,9 @@ const options: Options = {
 };
 
 export default function PdfExport({ data }: { data: Voter[] }) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isLoading, setIsLoading] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [refs, setRefs] = useState<React.RefObject<HTMLDivElement>[]>([]);
     const pages: Voter[][] = [];
     const cardPerPage = 16;

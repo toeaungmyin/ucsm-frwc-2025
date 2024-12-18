@@ -12,7 +12,9 @@ export default function VotersTable({ data }: { data: Voter[] }) {
     return (
         <>
             <TableHeader setVoters={setVoters} />
-            {voters && <DataTable columns={columns} data={voters} />}
+            {voters && (
+                <DataTable columns={columns} data={voters} meta={null} />
+            )}
         </>
     );
 }

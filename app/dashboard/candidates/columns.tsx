@@ -2,12 +2,16 @@
 
 import { Icons } from "@/components/assets/icons";
 import { Button } from "@/components/ui/button";
-import { Candidate } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { useState } from "react";
 
-export const columns: ColumnDef<Candidate>[] = [
+type CandidateWithVotes = Prisma.CandidateGetPayload<{
+    include: { votes: true };
+}>;
+
+export const columns: ColumnDef<CandidateWithVotes>[] = [
     {
         accessorKey: "nomineeId",
         header: "NOMINEE NO",
@@ -54,6 +58,7 @@ export const columns: ColumnDef<Candidate>[] = [
         id: "action",
         enableHiding: false,
         cell: ({ row, table }) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const [isLoading, setIsLoading] = useState(false);
 
             const onDelete = async () => {

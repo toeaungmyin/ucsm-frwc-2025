@@ -16,10 +16,11 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { RowData, TableMeta } from "@tanstack/table-core";
+import { TableMeta } from "@tanstack/table-core";
 
 declare module "@tanstack/table-core" {
-    interface TableMeta<TData extends RowData> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface TableMeta<TData> {
         handleDelete: (id: number) => Promise<void>;
     }
 }
@@ -27,7 +28,7 @@ declare module "@tanstack/table-core" {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    meta: TableMeta<TData>;
+    meta?: TableMeta<TData> | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -38,10 +39,10 @@ export function DataTable<TData, TValue>({
     const table = useReactTable({
         data,
         columns,
-        meta,
+        meta: meta ?? undefined,
         getCoreRowModel: getCoreRowModel(),
     });
-    
+
     return (
         <div className="rounded-md border">
             <Table>
@@ -50,9 +51,7 @@ export function DataTable<TData, TValue>({
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead
-                                        key={header.id}
-                                    >
+                                    <TableHead key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(

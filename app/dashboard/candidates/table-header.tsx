@@ -6,9 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import client from '@/lib/axios';
-import { Candidate, Category } from '@prisma/client';
-import React, { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Category, Prisma } from "@prisma/client";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type CandidateWithVotes = Prisma.CandidateGetPayload<{
+    include: { votes: true };
+}>;
 
 type Inputs = {
     nomineeId: string;
@@ -20,7 +24,7 @@ type Inputs = {
 type Props = {
     category: Category;
     setCategory: React.Dispatch<React.SetStateAction<Category>>;
-    setCandidates: React.Dispatch<React.SetStateAction<Candidate[]>>;
+    setCandidates: React.Dispatch<React.SetStateAction<CandidateWithVotes[]>>;
 };
 
 export default function TableHeader({

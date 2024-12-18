@@ -1,14 +1,14 @@
-"use client";
 import { Category } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import ucsm_logo from "@/components/assets/images/logo_ucsm.png";
-import { useSearchParams } from "next/navigation";
 
-export default function Home() {
-    const searchParam = useSearchParams();
-
-    const code = searchParam.get("code");
+export default function Page({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string | undefined };
+}) {
+    const code = searchParams.code;
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-cyan-400 p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">

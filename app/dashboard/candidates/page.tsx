@@ -3,13 +3,17 @@
 import React, { useEffect, useState } from "react";
 import client from "@/lib/axios";
 import TableHeader from "./table-header";
-import { Candidate, Category } from "@prisma/client";
+import { Category, Prisma } from "@prisma/client";
 import { DataTable } from "@/components/data.table";
 import { toast } from "@/hooks/use-toast";
 import { columns } from "./columns";
 
+type CandidateWithVotes = Prisma.CandidateGetPayload<{
+    include: { votes: true };
+}>;
+
 export default function Page() {
-    const [candidates, setCandidates] = useState<Candidate[]>([]);
+    const [candidates, setCandidates] = useState<CandidateWithVotes[]>([]);
     const [category, setCategory] = useState<Category>("KING");
 
     const handleDelete = async (id: number) => {
@@ -34,7 +38,7 @@ export default function Page() {
                 });
             }
         }
-    }
+    };
 
     const tableMeta = { handleDelete };
 
@@ -44,9 +48,8 @@ export default function Page() {
                 const response = await client.get(
                     `/candidates?category=${category}`
                 );
-                
-                setCandidates(response.data);
 
+                setCandidates(response.data);
             } catch (error) {
                 if (error instanceof Error) {
                     toast({

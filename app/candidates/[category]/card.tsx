@@ -2,24 +2,28 @@ import { Icons } from "@/components/assets/icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import client from "@/lib/axios";
-import { Candidate, Category, Vote, Voter } from "@prisma/client";
+import { Category, Prisma, Vote, Voter } from "@prisma/client";
+import { AxiosError } from "axios";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
+
+type CandidateWithVotes = Prisma.CandidateGetPayload<{
+    include: { votes: true };
+}>;
 
 export default function Card({
     candidate,
     auth,
 }: {
-    candidate: Candidate;
+    candidate: CandidateWithVotes;
     auth: Voter;
 }) {
     const searchParam = useSearchParams();
     const code = searchParam.get("code");
 
-    // State to track the user's vote
     const [vote, setVote] = useState<Vote | null>(
-        candidate?.votes.find((vote: Vote) => vote.voterId === auth.id)
+        candidate?.votes?.find((vote: Vote) => vote.voterId === auth.id) || null
     );
     const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -39,7 +43,11 @@ export default function Card({
 
             setVote(response.data);
         } catch (error) {
-            if (error?.response?.data?.error?.code === "P2002") {
+            const axiosError = error as AxiosError<{
+                error: { code: string };
+                message: string;
+            }>;
+            if (axiosError.response?.data?.error?.code === "P2002") {
                 toast({
                     description: "You have already voted for this category",
                     variant: "destructive",
@@ -47,7 +55,8 @@ export default function Card({
             } else {
                 toast({
                     description:
-                        error?.response?.data?.message || "An error occurred",
+                        axiosError.response?.data?.message ||
+                        "An error occurred",
                     variant: "destructive",
                 });
             }
@@ -70,8 +79,10 @@ export default function Card({
 
             setVote(null);
         } catch (error) {
+            const axiosError = error as AxiosError<{ message: string }>;
             toast({
-                description: "An error occurred",
+                description:
+                    axiosError.response?.data?.message || "An error occurred",
                 variant: "destructive",
             });
         } finally {
