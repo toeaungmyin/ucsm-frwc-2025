@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Candidate } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
+import { useState } from "react";
 
 export const columns: ColumnDef<Candidate>[] = [
     {
@@ -20,9 +21,11 @@ export const columns: ColumnDef<Candidate>[] = [
         header: "IMAGE",
         cell: ({ row }) => {
             const candidate = row.original;
+            console.log(candidate);
+
             return (
                 candidate?.image && (
-                    <a href={candidate.image} target="_blank" >
+                    <a href={candidate.image} target="_blank">
                         <Image
                             className="aspect-square object-contain w-12 h-auto"
                             width={100}
@@ -51,13 +54,19 @@ export const columns: ColumnDef<Candidate>[] = [
         id: "action",
         enableHiding: false,
         cell: ({ row, table }) => {
+            const [isLoading, setIsLoading] = useState(false);
+
+            const onDelete = async () => {
+                setIsLoading(true);
+                await table.options.meta?.handleDelete(row.original.id);
+                setIsLoading(false);
+            };
             return (
                 <Button
-                    onClick={() =>
-                        table.options.meta?.handleDelete(row.original.id)
-                    }
+                    onClick={() => onDelete()}
                     variant="destructive"
                     size="sm"
+                    disabled={isLoading}
                 >
                     <Icons.trash />
                 </Button>

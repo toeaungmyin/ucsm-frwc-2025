@@ -25,7 +25,7 @@ export const Icons = {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
             className="lucide lucide-trash-2"
@@ -36,6 +36,24 @@ export const Icons = {
             <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
             <line x1="10" x2="10" y1="11" y2="17" />
             <line x1="14" x2="14" y1="11" y2="17" />
+        </svg>
+    ),
+    true: (props: IconProps) => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-check-check"
+            {...props}
+        >
+            <path d="M18 6 7 17l-5-5" />
+            <path d="m22 10-7.5 7.5L13 16" />
         </svg>
     ),
 };

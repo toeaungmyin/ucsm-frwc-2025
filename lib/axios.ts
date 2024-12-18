@@ -4,9 +4,9 @@ const client = axios.create({
     baseURL: "http://localhost:3000/api",
     headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
     },
-    timeout: 10000,
+    timeout: 60000,
 });
 
 // // You can also add interceptors if needed

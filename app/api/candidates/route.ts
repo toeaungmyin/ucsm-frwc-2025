@@ -20,27 +20,28 @@ export async function GET(request: NextRequest) {
                 category: category,
             },
             include: {
-                votes: true, 
-            }
+                votes: {
+                    include: {
+                        voter: true,
+                    },
+                },
+            },
         });
         return NextResponse.json(candidates);
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
     }
-    
 }
-
-
 
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
         const candidateName = formData.get("name") as string;
         const category = formData.get("category") as Category;
-        const image = formData.get("image") as Blob;
+        const image = formData.get("image") as Blob | undefined;
         const nomineeId = formData.get("nomineeId") as string;
 
-        if (!candidateName || !category || !image) {
+        if (!candidateName || !category || image == null || !nomineeId) {
             return NextResponse.json(
                 { message: "All fields are required" },
                 { status: 400 }
@@ -48,11 +49,11 @@ export async function POST(request: NextRequest) {
         }
 
         let blob = null;
-        if (image) {
+        if (!image == undefined) {
             const currentTime = new Date().getTime();
             blob = await put(currentTime.toString(), image, {
-            access: "public",
-        });
+                access: "public",
+            });
         }
 
         const data = await prisma.candidate.create({

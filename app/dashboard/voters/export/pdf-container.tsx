@@ -18,15 +18,13 @@ export default function PdfContainer({
     }, [setRefs]);
 
     return (
-        <div className="border-2">
-            <div
-                ref={pageRef}
-                className="p-4 bg-white grid grid-cols-4 gap-2 aspect-[210/297] w-full items-stretch overflow-hidden"
-            >
-                {page.map((voter, i) => (
-                    <Card key={i} data={voter} />
-                ))}
-            </div>
+        <div
+            ref={pageRef}
+            className="bg-white p-1 grid grid-cols-4 grid-rows-4 gap-2 aspect-[210/297] w-full items-stretch overflow-hidden rounded"
+        >
+            {page.map((voter, i) => (
+                <Card key={i} data={voter} />
+            ))}
         </div>
     );
 }

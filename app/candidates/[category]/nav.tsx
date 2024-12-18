@@ -5,21 +5,23 @@ import React, { useEffect, useState } from "react";
 import ucsm_logo from "@/components/assets/images/logo_ucsm.png";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Category } from "@prisma/client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export default function Nav() {
-    const params = useParams<{category: Category}>();
+    const params = useParams<{ category: Category }>();
+    const searchParam = useSearchParams();
+    const code = searchParam.get("code");
     const [category, setCategory] = useState<Category | null>(params.category);
     const router = useRouter();
 
     useEffect(() => {
-        router.push(`/candidates/${category}`);
-    }, [category,router]);
+        router.push(`/candidates/${category}?code=${code}`);
+    }, [category, router, code]);
 
     return (
         <div className="flex justify-between items-center p-2 bg-cyan-400">
-            <Link href={'/'} className="">
+            <Link href={"/"} className="">
                 <Image
                     src={ucsm_logo}
                     className="ms-2 aspect-square object-contain w-10 h-auto"

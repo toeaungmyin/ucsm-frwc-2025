@@ -25,15 +25,17 @@ model Candidate {
 }
 
 model Vote {
+    
   id          Int       @id @default(autoincrement())
   voterId     String
   candidateId Int
-  createdAt   DateTime  @default(now())
-
+  category    Category
   voter       Voter     @relation(fields: [voterId], references: [id])
   candidate   Candidate @relation(fields: [candidateId], references: [id])
+  createdAt   DateTime  @default(now())
 
-  @@unique([voterId, candidateId]) // Ensures one vote per voter per candidate
+  @@unique([voterId, candidateId]) // Ensures one vote per voter per candidate for each category
+  @@unique([voterId, category]) // Ensures one vote per voter per candidate for each category
 }
 
 enum Category {
@@ -48,5 +50,5 @@ enum Category {
 model Setting {
   id         Int      @id @default(autoincrement())
   curr_index Int      @default(0)
-  vote_open  Boolean  @default(false)
+  is_vote_open  Boolean  @default(false)
 }

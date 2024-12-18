@@ -7,9 +7,9 @@ async function main() {
     await prisma.setting.create({
         data: {
             curr_index: 0,
-            vote_open: false,
-        }
-    })
+            is_vote_open: false,
+        },
+    });
 }
 
 main()
