@@ -7,7 +7,7 @@ The UCSM Fresher Welcome Voting App is a web application designed for the Univer
 - **Candidate Management**: Add, update, and delete candidates.
 - **Voter Management**: Generate and manage voters.
 - **Voting System**: Cast votes for candidates in different categories.
-- **PDF Export**: Export voter verification tickets with QR codes to PDF.
+- **PDF Export**: Export voter verification tickets with QR codes.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
 
 ## Project Structure
