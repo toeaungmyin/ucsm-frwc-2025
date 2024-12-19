@@ -1,17 +1,12 @@
 import { Category } from "@prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 import ucsm_logo from "@/components/assets/images/logo_ucsm.png";
+import LinkCard from "./LinkCard";
+import { Suspense } from "react";
 
-export default function Page({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
-}) {
-    const code = searchParams.code;
-
+export default function page() {
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen bg-cyan-400 p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="flex flex-col justify-center items-center min-h-screen bg-cyan-400 py-4 px-4 gap-4 sm:p-20 font-[family-name:var(--font-geist-sans)]">
             <div className="flex flex-col gap-2 items-center">
                 <Image
                     src={ucsm_logo}
@@ -27,27 +22,12 @@ export default function Page({
                     <h2 className="font-medium text-lg">FRESHERS WELCOME</h2>
                 </div>
             </div>
-            <div className="w-full md:w-1/3 flex flex-col items-center gap-2">
+            <div className="w-full md:w-1/3 grid grid-cols-2 items-center gap-2">
                 {Object.values(Category).map((cat, index) => {
-                    const category = cat
-                        .split("_")
-                        .map(
-                            (word) =>
-                                word.charAt(0).toUpperCase() +
-                                word.slice(1).toLowerCase()
-                        )
-                        .join(" ");
-
                     return (
-                        <Link
-                            href={`/candidates/${cat}?code=${code}`}
-                            key={index}
-                            className="bg-gray-50 border shadow-md p-2 rounded text-xl font-medium self-stretch"
-                        >
-                            <div className="flex justify-center">
-                                {category}
-                            </div>
-                        </Link>
+                        <Suspense key={index} fallback={<div>Loading...</div>}>
+                            <LinkCard cat={cat} />
+                        </Suspense>
                     );
                 })}
             </div>

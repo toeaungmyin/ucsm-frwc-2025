@@ -33,47 +33,58 @@ export async function GET(request: NextRequest) {
     }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
+        // Extract and validate form data
         const formData = await request.formData();
-        const candidateName = formData.get("name") as string;
-        const category = formData.get("category") as Category;
-        const image = formData.get("image") as Blob | undefined;
-        const nomineeId = formData.get("nomineeId") as string;
+        const candidateName = formData.get("name") as string | null;
+        const category = formData.get("category") as Category | null;
+        const image = formData.get("image") as Blob | null;
+        const nomineeId = formData.get("nomineeId") as string | null;
 
-        if (!candidateName || !category || image == null || !nomineeId) {
+        if (!candidateName || !category || !nomineeId) {
             return NextResponse.json(
-                { message: "All fields are required" },
+                {
+                    message:
+                        "All fields are required (name, category, nomineeId).",
+                },
                 { status: 400 }
             );
         }
 
-        let blob = null;
-        if (!image == undefined) {
-            const currentTime = new Date().getTime();
-            blob = await put(currentTime.toString(), image, {
-                access: "public",
-            });
+        // Upload image if provided
+        let blobUrl: string | null = null;
+        if (image) {
+            const currentTime = Date.now().toString();
+            const blob = await put(currentTime, image, { access: "public" });
+            blobUrl = blob.url;
         }
 
+        // Save candidate to the database
         const data = await prisma.candidate.create({
             data: {
                 name: candidateName,
-                category: category,
-                image: blob?.url || null,
-                nomineeId: nomineeId,
+                category,
+                image: blobUrl,
+                nomineeId,
             },
             include: {
-                votes: true,
+                votes: true, // Adjust as needed
             },
         });
 
-        return NextResponse.json(data);
-    } catch (error) {
+        return NextResponse.json(data, { status: 201 });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+        console.error("Error in POST /api/candidate:", error.message || error);
         return NextResponse.json(
-            { message: "Internal Server Error", error },
+            {
+                message: "Internal Server Error",
+                error: error.message || "Unknown error",
+            },
             { status: 500 }
         );
     }
 }
+
 
