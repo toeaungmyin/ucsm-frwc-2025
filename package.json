@@ -9,6 +9,7 @@
         "start": "next start",
         "lint": "next lint",
         "seed": "prisma db seed",
+        "postinstall": "prisma generate",
         "migrate": "prisma migrate dev",
         "migrate:reset": "prisma migrate reset"
     },
