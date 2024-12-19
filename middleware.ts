@@ -14,11 +14,17 @@ export async function middleware(request: NextRequest) {
         }
 
         try {
-            const response = await client.get(`/voters/check`, {
-                params: { code },
-            });
+            const response = await fetch(
+                `${process.env.API_BASE_URL}/voters/check?code=${code}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-            if (!response?.data) {
+            if (!response.ok) {
                 console.error("Middleware Error: Voter not found");
                 return redirectToNotFound(request);
             }
