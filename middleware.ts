@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import client from "./lib/axios";
+import { notFound } from "next/navigation";
 
 export async function middleware(request: NextRequest) {
     const { pathname, searchParams } = request.nextUrl;
@@ -9,7 +10,7 @@ export async function middleware(request: NextRequest) {
         const code = searchParams.get("code");
 
         if (!code) {
-            return redirectToNotFound(request);
+            return notFound();
         }
 
         try {
@@ -18,7 +19,7 @@ export async function middleware(request: NextRequest) {
             });
 
             if (!response?.data) {
-                return redirectToNotFound(request);
+                return notFound();
             }
 
             const nextResponse = NextResponse.next();
@@ -26,15 +27,11 @@ export async function middleware(request: NextRequest) {
             return nextResponse;
         } catch (error) {
             console.error("Middleware Error: ", error);
-            return redirectToNotFound(request);
+            return notFound();
         }
     }
 
     return NextResponse.next();
-}
-
-function redirectToNotFound(request: NextRequest) {
-    return NextResponse.redirect(new URL("/not_found", request.url));
 }
 
 export const config = {
