@@ -51,4 +51,5 @@ model Setting {
   id         Int      @id @default(autoincrement())
   curr_index Int      @default(0)
   is_vote_open  Boolean  @default(false)
+  password  String
 }

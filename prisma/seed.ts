@@ -6,8 +6,9 @@ async function main() {
     console.log("------ Seeding started ------");
     await prisma.setting.create({
         data: {
-            curr_index: 0,
+            curr_index: 1,
             is_vote_open: false,
+            password: "frwc2024&2025",
         },
     });
 }
