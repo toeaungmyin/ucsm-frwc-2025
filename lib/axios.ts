@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+    baseURL: `https://ucsm-frwc-2024-2025.vercel.app/api`,
     headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
