@@ -4,9 +4,7 @@ import client from "./lib/axios";
 
 export async function middleware(request: NextRequest) {
     const { pathname, searchParams } = request.nextUrl;
-    console.log(searchParams);
 
-    // Match specific routes
     if (["/", "/candidates"].some((route) => pathname.startsWith(route))) {
         const code = searchParams.get("code");
 
@@ -32,11 +30,9 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    // Continue for unmatched routes
     return NextResponse.next();
 }
 
-// Utility function for consistent redirection
 function redirectToNotFound(request: NextRequest) {
     return NextResponse.redirect(new URL("/not_found", request.url));
 }
