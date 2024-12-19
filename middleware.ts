@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import client from "./lib/axios";
-import { notFound } from "next/navigation";
 
 export async function middleware(request: NextRequest) {
     const { pathname, searchParams } = request.nextUrl;
@@ -10,7 +9,8 @@ export async function middleware(request: NextRequest) {
         const code = searchParams.get("code");
 
         if (!code) {
-            return notFound();
+            console.error("Middleware Error: Code not found in query params");
+            return redirectToNotFound(request);
         }
 
         try {
@@ -19,19 +19,22 @@ export async function middleware(request: NextRequest) {
             });
 
             if (!response?.data) {
-                return notFound();
+                console.error("Middleware Error: Voter not found");
+                return redirectToNotFound(request);
             }
 
-            const nextResponse = NextResponse.next();
-
-            return nextResponse;
+            return NextResponse.next();
         } catch (error) {
             console.error("Middleware Error: ", error);
-            return notFound();
+            return redirectToNotFound(request);
         }
     }
 
     return NextResponse.next();
+}
+
+function redirectToNotFound(request: NextRequest) {
+    return NextResponse.redirect(new URL("/not_found", request.url));
 }
 
 export const config = {
