@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import client from "./lib/axios";
 
 export async function middleware(request: NextRequest) {
     const { pathname, searchParams } = request.nextUrl;
 
     if (["/", "/candidates"].some((route) => pathname.startsWith(route))) {
-        const code = searchParams.get("code");
+        const code = searchParams.get("code") || null;
 
         if (!code) {
             console.error("Middleware Error: Code not found in query params");
@@ -15,13 +14,7 @@ export async function middleware(request: NextRequest) {
 
         try {
             const response = await fetch(
-                `${process.env.API_BASE_URL}/voters/check?code=${code}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
+                `${process.env.NEXT_PUBLIC_API_URL}/voters/check?code=${code}`
             );
 
             if (!response.ok) {
