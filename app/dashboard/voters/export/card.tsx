@@ -32,7 +32,7 @@ export default function Card({ data }: { data: Voter }) {
             </div>
             <div className="bg-white p-2">
                 <QRCode
-                    value={`${host}/candidates/KING?code=${data.id}`}
+                    value={`${host}?code=${data.id}`}
                     size={128}
                     level="Q"
                 />
