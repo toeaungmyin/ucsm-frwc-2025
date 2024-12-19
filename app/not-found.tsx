@@ -1,4 +1,6 @@
 export default function NotFound() {
+    console.log(process.env.NEXT_PUBLIC_API_URL);
+    
     return (
         <div className="bg-cyan-600 w-full min-h-screen flex justify-center items-center px-12">
             <div className="text-white flex flex-col gap-2 justify-start items-center">
