@@ -12,14 +12,12 @@ export default async function page() {
 
         if ("message" in response) {
             toast({ description: response.message, variant: "destructive" });
-            return null;
+        } else {
+            voters = response;
         }
-
-        voters = response;
     } catch (error) {
         console.log(error);
         toast({ description: "An error occurred", variant: "destructive" });
-        return null;
     }
 
     return (
