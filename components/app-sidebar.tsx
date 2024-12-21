@@ -18,23 +18,23 @@ import Navtitle from "./nav/nav-title";
 const items = [
     {
         title: "Home",
-        url: "/dashboard",
+        url: "/4714461e6ed697c165d89eeebb15b0246ca64d418765e95bdb9b2bdba787a131",
         icon: ChartArea,
     },
     {
         title: "Voters",
-        url: "/dashboard/voters",
+        url: "/4714461e6ed697c165d89eeebb15b0246ca64d418765e95bdb9b2bdba787a131/voters",
         icon: User,
     },
 
     {
         title: "Candidates",
-        url: "/dashboard/candidates",
+        url: "/4714461e6ed697c165d89eeebb15b0246ca64d418765e95bdb9b2bdba787a131/candidates",
         icon: ContactRound,
     },
     {
         title: "Settings",
-        url: "/dashboard/setting",
+        url: "/4714461e6ed697c165d89eeebb15b0246ca64d418765e95bdb9b2bdba787a131/setting",
         icon: Settings,
     },
 ];
