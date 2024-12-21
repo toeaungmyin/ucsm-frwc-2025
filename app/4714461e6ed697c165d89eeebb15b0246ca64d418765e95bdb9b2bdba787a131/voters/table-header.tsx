@@ -172,7 +172,11 @@ export default function TableHeader({ setVoters }:{setVoters: React.Dispatch<Rea
                         "Delete"
                     )}
                 </Button>
-                <Link href={"/dashboard/voters/export"}>
+                <Link
+                    href={
+                        "/4714461e6ed697c165d89eeebb15b0246ca64d418765e95bdb9b2bdba787a131/voters/export"
+                    }
+                >
                     <Button className="uppercase" variant="outline">
                         Export
                     </Button>
