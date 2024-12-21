@@ -6,7 +6,6 @@ import ucsm_logo from "@/components/assets/images/logo_ucsm.png";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Category } from "@prisma/client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 export default function Nav() {
     const params = useParams<{ category: Category }>();
@@ -21,7 +20,7 @@ export default function Nav() {
 
     return (
         <div className="flex justify-between items-center p-2 bg-cyan-400">
-            <Link href={"/"} className="">
+            <div className="flex items-center gap-2">
                 <Image
                     src={ucsm_logo}
                     className="ms-2 aspect-square object-contain w-10 h-auto"
@@ -30,7 +29,10 @@ export default function Nav() {
                     height={0}
                     priority
                 />
-            </Link>
+                <h1 className="font-medium font-rubik md:text-2xl text-md text-gray-50">
+                    Fresher Welcome 2024-2025
+                </h1>
+            </div>
             <Select
                 value={category as string}
                 onValueChange={(value: Category) => setCategory(value)}

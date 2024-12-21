@@ -2,7 +2,7 @@ import { Icons } from "@/components/assets/icons";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import client from "@/lib/axios";
-import { Category, Prisma, Vote, Voter } from "@prisma/client";
+import { Prisma, Vote, Voter } from "@prisma/client";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -100,11 +100,7 @@ export default function Card({
     };
 
     // Render image card for candidates in valid categories
-    if (
-        candidate.image &&
-        candidate.category !== Category.BEST_PERFORMANCE &&
-        candidate.category !== Category.BEST_SINGER
-    ) {
+    if (candidate.image) {
         return (
             <div className="w-full md:max-w-sm bg-white shadow border rounded p-4 flex flex-col gap-2">
                 <Image

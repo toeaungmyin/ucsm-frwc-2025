@@ -3,6 +3,7 @@ import Image from "next/image";
 import ucsm_logo from "@/components/assets/images/logo_ucsm.png";
 import LinkCard from "./LinkCard";
 import { Suspense } from "react";
+import { Icons } from "@/components/assets/icons";
 
 export default function page() {
     return (
@@ -25,7 +26,7 @@ export default function page() {
             <div className="w-full md:w-1/3 grid grid-cols-2 items-center gap-2">
                 {Object.values(Category).map((cat, index) => {
                     return (
-                        <Suspense key={index} fallback={<div>Loading...</div>}>
+                        <Suspense key={index} fallback={<FallBackComponent />}>
                             <LinkCard cat={cat} />
                         </Suspense>
                     );
@@ -34,3 +35,13 @@ export default function page() {
         </div>
     );
 }
+
+const FallBackComponent = () => {
+    return (
+        <div className="bg-gray-50 border shadow-md p-1 rounded text-xl font-medium self-stretch aspect-[2/1] flex justify-center items-center">
+            <div className="flex justify-center text-center">
+                <Icons.spinner className="animate-spin" />
+            </div>
+        </div>
+    );
+};
