@@ -2,13 +2,17 @@
 
 import { toast } from '@/hooks/use-toast';
 import client from '@/lib/axios';
-import { Prisma, Voter } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { useParams, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Card from "./card";
 import { Icons } from "@/components/assets/icons";
 
 type CandidateWithVotes = Prisma.CandidateGetPayload<{
+    include: { votes: true };
+}>;
+
+type VoterWithVotes = Prisma.VoterGetPayload<{
     include: { votes: true };
 }>;
 
@@ -19,7 +23,7 @@ export default function Page() {
 
     const [candidates, setCandidates] = useState<CandidateWithVotes[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
-    const [auth, setAuth] = useState<Voter>();
+    const [auth, setAuth] = useState<VoterWithVotes>();
     useEffect(() => {
         const fetchCandidates = async () => {
             try {

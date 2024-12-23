@@ -1,7 +1,7 @@
 import { Category } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "..";
-import { put } from "@vercel/blob"
+import { put } from "@vercel/blob";
 
 export async function GET(request: NextRequest) {
     try {
@@ -26,8 +26,16 @@ export async function GET(request: NextRequest) {
                     },
                 },
             },
+            orderBy: {
+                nomineeId: "asc",
+            },
         });
-        return NextResponse.json(candidates);
+
+        const sortedCandidates = candidates.sort((a, b) => {
+            return parseInt(a.nomineeId) - parseInt(b.nomineeId);
+        });
+
+        return NextResponse.json(sortedCandidates);
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
     }
@@ -86,5 +94,3 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         );
     }
 }
-
-

@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
 }
 
 function redirectToNotFound(request: NextRequest) {
-    return NextResponse.redirect(new URL("/not_found", request.url));
+    return NextResponse.redirect(new URL("/not-found", request.url));
 }
 
 export const config = {

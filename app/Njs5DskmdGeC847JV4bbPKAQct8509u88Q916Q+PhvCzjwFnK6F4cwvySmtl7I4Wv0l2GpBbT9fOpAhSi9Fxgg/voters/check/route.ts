@@ -17,6 +17,9 @@ export async function GET(request: NextRequest) {
         where: {
             id: code,
         },
+        include: {
+            votes: true,
+        },
     });
 
     if (!voter) {

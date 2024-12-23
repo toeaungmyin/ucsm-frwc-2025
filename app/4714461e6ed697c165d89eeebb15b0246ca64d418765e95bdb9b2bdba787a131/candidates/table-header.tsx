@@ -40,6 +40,7 @@ export default function TableHeader({
     const {
         register,
         setValue,
+        reset,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>({
@@ -52,7 +53,7 @@ export default function TableHeader({
     });
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        try {           
+        try {
             setIsLoding(true);
 
             const formData = new FormData();
@@ -65,12 +66,14 @@ export default function TableHeader({
             const response = await client.post("/candidates", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                }
+                },
             });
-            
+
             setCandidates((prev) => [...prev, response.data]);
             setOpen(false);
             toast({ description: "Candidate generated successfully" });
+
+            reset();
         } catch (error) {
             if (error instanceof Error) {
                 toast({
